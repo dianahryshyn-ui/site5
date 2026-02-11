@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0071e3;
+            --deep-blue: #1d1d1f;
+            --light-bg: #f5f5f7;
+            --white: #ffffff;
+            --text-dark: #1d1d1f;
+            --text-gray: #86868b;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: var(--deep-blue);
+            font-weight: 600;
+        }
+
+        /* --- Product Grid --- */
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer; /* Indicates clickable */
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .product-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- Options (Colors & Memory) --- */
+        .options-container {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .color-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        /* Selected state for color: Ring effect */
+        .color-dot.selected {
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-blue);
+            border-color: transparent;
+        }
+
+        .storage-options {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .storage-tag {
+            font-size: 0.65rem;
+            padding: 4px 8px;
+            background: #f0f0f2;
+            color: #6e6e73;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        /* Selected state for storage */
+        .storage-tag.selected {
+            background: var(--text-dark);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .add-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: auto; 
+        }
+
+        /* --- Floating Bar --- */
+        .action-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(40, 40, 45, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .action-bar:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
+        .cart-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-count {
+            background: var(--primary-blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .action-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Animation Elements --- */
+        .flying-img {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: top 0.8s cubic-bezier(0.5, 0, 0.5, 1), 
+                        left 0.8s cubic-bezier(0.5, 0, 0.5, 1), 
+                        width 0.8s ease, 
+                        height 0.8s ease, 
+                        opacity 0.8s ease;
+        }
+
+        @keyframes bump {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        .bump-anim {
+            animation: bump 0.3s ease;
+        }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            text-align: center;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* --- Form Styles --- */
+        .form-container {
+            width: 100%;
+            text-align: left;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* --- Success/Car Animation Sections --- */
+        .success-view {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #34c759; /* Green for success */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 10px 20px rgba(52, 199, 89, 0.3);
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-view.active .success-icon {
+            transform: scale(1);
+        }
+
+        .modal-title-success {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .request-details {
+            color: var(--text-gray);
+            margin-bottom: 40px;
+        }
+
+        .close-btn {
+            background: transparent;
+            color: var(--primary-blue);
+            padding: 10px 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        /* --- Car Animation --- */
+        .car-container {
+            position: relative;
+            height: 60px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .car-svg {
+            position: absolute;
+            left: -100px;
+            width: 80px;
+            height: auto;
+            color: var(--primary-blue);
+        }
+
+        @keyframes drive {
+            0% { left: -100px; transform: scaleX(1); }
+            40% { left: 50%; transform: translateX(-50%) scaleX(1); }
+            60% { left: 50%; transform: translateX(-50%) scaleX(1); }
+            100% { left: 120%; transform: translateX(0) scaleX(1); }
+        }
+
+        .success-view.active .car-svg {
+            animation: drive 3s ease-in-out 0.6s forwards;
+        }
+
+        /* Back Button */
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Store</h1>
+    </header>
+
+    <div class="container">
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be injected here via JS -->
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="action-bar" id="actionBar" onclick="openInsight()">
+        <div class="cart-info">
+            <div class="cart-count" id="cartCount">0</div>
+            <span>Items</span>
+        </div>
+        <div class="action-text">GET INSIGHTS</div>
+    </div>
+
+    <!-- Insight/Success Modal -->
+    <div class="modal-overlay" id="insightModal">
+        <div class="modal-content">
+            <a onclick="closeModal()" class="back-link">✕ Close</a>
+
+            <!-- Step 1: Form -->
+            <div id="formView" class="form-container">
+                <h2 class="modal-header">Your Preferences</h2>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="nameInput" class="form-input" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="emailInput" class="form-input" placeholder="email@example.com">
+                </div>
+                <button class="submit-btn" onclick="submitSelection()">
+                    Confirm Selection
+                    <span>✓</span>
+                </button>
+            </div>
+
+            <!-- Step 2: Success Animation -->
+            <div id="successView" class="success-view">
+                <div class="success-icon">✓</div>
+                <h2 class="modal-title-success">Selection Received</h2>
+                <p class="request-details" id="summaryText">
+                    We have received your preferences.
+                </p>
+                
+                <!-- Car Animation Block -->
+                <div class="car-container">
+                    <!-- SVG Car Icon -->
+                    <svg class="car-svg" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 13V7H20C20.5523 7 21 7.44772 21 8V13H19ZM17 13V6H12V13H17ZM10 13V6H4V13H10ZM10 4H18.5858L21.5858 7H23V14H22C22 15.6569 20.6569 17 19 17C17.3431 17 16 15.6569 16 14H8C8 15.6569 6.65685 17 5 17C3.34315 17 2 15.6569 2 14H1V4C1 2.89543 1.89543 2 3 2H10V4ZM5 15C5.55228 15 6 14.5523 6 14C6 13.4477 5.55228 13 5 13C4.44772 13 4 13.4477 4 14C4 14.5523 4.44772 15 5 15ZM19 15C19.5523 15 20 14.5523 20 14C20 13.4477 19.5523 13 19 13C18.4477 13 18 13.4477 18 14C18 14.5523 18.4477 15 19 15Z"/>
+                    </svg>
+                </div>
+
+                <button class="close-btn" onclick="resetApp()">Continue</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data Configuration
+        const products = [
+            { id: 'p1', img: 'https://i.pinimg.com/736x/bf/b6/88/bfb6884a8435fdde013c4e2686ff6443.jpg' },
+            { id: 'p2', img: 'https://i.pinimg.com/736x/5a/d4/83/5ad483298ac93f81b4795a36a97a5267.jpg' },
+            { id: 'p3', img: 'https://i.pinimg.com/736x/ef/ef/18/efef18c2ec02aa186c203c7bc0c35216.jpg' },
+            { id: 'p4', img: 'https://prod-api.mediaexpert.pl/api/images/gallery/thumbnails/images/81/8128369/iPhone_17_Pro_Max_Silver_PDP_Image_Position_1__pl-PL.jpg' },
+            { id: 'p5', img: 'https://i.pinimg.com/736x/e8/b5/3f/e8b53fecb998c9a7f0858763a4f119aa.jpg' },
+            { id: 'p6', img: 'https://i.pinimg.com/1200x/9b/1b/c7/9b1bc74e2a1ac97ef682fe7b174615ed.jpg' }
+        ];
+
+        let cart = [];
+        const grid = document.getElementById('productGrid');
+        const cartCountEl = document.getElementById('cartCount');
+        const actionBar = document.getElementById('actionBar');
+        const modal = document.getElementById('insightModal');
+        const formView = document.getElementById('formView');
+        const successView = document.getElementById('successView');
+
+        // Render Products with Selectable Options
+        function renderProducts() {
+            grid.innerHTML = products.map(product => `
+                <div class="product-card" onclick="addToCart(event, '${product.id}', '${product.img}')">
+                    <div class="img-container">
+                        <img src="${product.img}" alt="Product Image" class="product-img" id="img-${product.id}">
+                    </div>
+                    
+                    <div class="options-container">
+                        <div class="color-options">
+                            <div class="color-dot selected" style="background-color: #5e5e5e;" onclick="selectOption(event, this)"></div>
+                            <div class="color-dot" style="background-color: #f2f2f2;" onclick="selectOption(event, this)"></div>
+                            <div class="color-dot" style="background-color: #fae7cf;" onclick="selectOption(event, this)"></div>
+                            <div class="color-dot" style="background-color: #a7c1d9;" onclick="selectOption(event, this)"></div>
+                        </div>
+                        <div class="storage-options">
+                            <div class="storage-tag selected" onclick="selectOption(event, this)">128GB</div>
+                            <div class="storage-tag" onclick="selectOption(event, this)">256GB</div>
+                            <div class="storage-tag" onclick="selectOption(event, this)">512GB</div>
+                        </div>
+                    </div>
+
+                    <button class="add-btn">Select</button>
+                </div>
+            `).join('');
+        }
+
+        // Logic for Selecting Colors/Storage without adding to cart
+        function selectOption(e, el) {
+            e.stopPropagation(); // CRITICAL: Prevents the click from triggering addToCart on the parent
+            
+            // Find parent container to identify siblings
+            const container = el.parentElement;
+            const siblings = container.children;
+            
+            // Remove 'selected' class from all siblings
+            for (let sib of siblings) {
+                sib.classList.remove('selected');
+            }
+            
+            // Add 'selected' class to the clicked element
+            el.classList.add('selected');
+        }
+
+        // Add to Selection Logic with Animation
+        function addToCart(e, id, imgUrl) {
+            // No stopPropagation needed here because this is the top level handler
+            
+            cart.push(id);
+            
+            // Animation logic
+            const sourceImg = document.getElementById(`img-${id}`);
+            const rectStart = sourceImg.getBoundingClientRect();
+            const rectEnd = cartCountEl.getBoundingClientRect();
+
+            const flyer = document.createElement('img');
+            flyer.src = imgUrl;
+            flyer.classList.add('flying-img');
+            
+            flyer.style.top = `${rectStart.top}px`;
+            flyer.style.left = `${rectStart.left}px`;
+            flyer.style.width = `${rectStart.width}px`;
+            flyer.style.height = `${rectStart.height}px`;
+            
+            document.body.appendChild(flyer);
+
+            flyer.offsetHeight; // Force reflow
+
+            flyer.style.top = `${rectEnd.top}px`;
+            flyer.style.left = `${rectEnd.left}px`;
+            flyer.style.width = '25px';
+            flyer.style.height = '25px';
+            flyer.style.opacity = '0.5';
+
+            setTimeout(() => {
+                flyer.remove();
+                updateCartUI();
+                animateActionBar();
+            }, 800);
+        }
+
+        function updateCartUI() {
+            cartCountEl.textContent = cart.length;
+        }
+
+        function animateActionBar() {
+            actionBar.classList.remove('bump-anim');
+            void actionBar.offsetWidth; 
+            actionBar.classList.add('bump-anim');
+        }
+
+        // Insight / Modal Logic
+        function openInsight() {
+            if(cart.length === 0) {
+                alert("Please select at least one item.");
+                return;
+            }
+            // Show Form, Hide Success
+            formView.style.display = 'block';
+            successView.style.display = 'none';
+            successView.classList.remove('active');
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function submitSelection() {
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+
+            if(!name || !email) {
+                alert("Please fill in all fields");
+                return;
+            }
+
+            // Transition to Success View
+            formView.style.display = 'none';
+            successView.style.display = 'flex';
+            
+            // Trigger animations
+            setTimeout(() => {
+                successView.classList.add('active');
+                const summary = document.getElementById('summaryText');
+                summary.innerHTML = `We have received your preferences.<br>Confirmation sent to ${email}.`;
+            }, 100);
+        }
+
+        function resetApp() {
+            closeModal();
+            
+            // Reset state
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                document.getElementById('nameInput').value = '';
+                document.getElementById('emailInput').value = '';
+            }, 300);
+        }
+
+        // Initialize
+        renderProducts();
+
+    </script>
+</body>
+</html>
