@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0071e3;
+            /* Primary color changed from blue to red */
+            --primary-red: #e30000;
             --deep-blue: #1d1d1f;
             --light-bg: #f5f5f7;
             --white: #ffffff;
@@ -121,9 +122,9 @@
             position: relative;
         }
 
-        /* Selected state for color: Ring effect */
+        /* Selected state for color: Ring effect (changed to red) */
         .color-dot.selected {
-            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-blue);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-red);
             border-color: transparent;
         }
 
@@ -153,8 +154,9 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
+        /* Button color changed to red */
         .add-btn {
-            background: var(--primary-blue);
+            background: var(--primary-red);
             color: white;
             border: none;
             padding: 8px 20px;
@@ -164,7 +166,7 @@
             cursor: pointer;
             transition: background 0.3s;
             width: 100%;
-            margin-top: auto; 
+            margin-top: auto;
         }
 
         /* --- Floating Bar --- */
@@ -199,8 +201,9 @@
             gap: 12px;
         }
 
+        /* Badge color changed to red */
         .cart-count {
-            background: var(--primary-blue);
+            background: var(--primary-red);
             color: white;
             width: 28px;
             height: 28px;
@@ -227,10 +230,10 @@
             pointer-events: none;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: top 0.8s cubic-bezier(0.5, 0, 0.5, 1), 
-                        left 0.8s cubic-bezier(0.5, 0, 0.5, 1), 
-                        width 0.8s ease, 
-                        height 0.8s ease, 
+            transition: top 0.8s cubic-bezier(0.5, 0, 0.5, 1),
+                        left 0.8s cubic-bezier(0.5, 0, 0.5, 1),
+                        width 0.8s ease,
+                        height 0.8s ease,
                         opacity 0.8s ease;
         }
 
@@ -304,13 +307,15 @@
             outline: none;
         }
 
+        /* Focus ring changed to red */
         .form-input:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 4px rgba(227, 0, 0, 0.1);
         }
 
+        /* Submit button changed to red */
         .submit-btn {
-            background: var(--primary-blue);
+            background: var(--primary-red);
             color: white;
             border: none;
             width: 100%;
@@ -374,9 +379,10 @@
             margin-bottom: 40px;
         }
 
+        /* Close/continue text button kept red to match the theme */
         .close-btn {
             background: transparent;
-            color: var(--primary-blue);
+            color: var(--primary-red);
             padding: 10px 30px;
             border: none;
             font-weight: 600;
@@ -392,13 +398,14 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        
+
+        /* Car color changed to red */
         .car-svg {
             position: absolute;
             left: -100px;
             width: 80px;
             height: auto;
-            color: var(--primary-blue);
+            color: var(--primary-red);
         }
 
         @keyframes drive {
@@ -454,14 +461,17 @@
             <!-- Step 1: Form -->
             <div id="formView" class="form-container">
                 <h2 class="modal-header">Your Preferences</h2>
+
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
                     <input type="text" id="nameInput" class="form-input" placeholder="Your Name">
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
                     <input type="email" id="emailInput" class="form-input" placeholder="email@example.com">
                 </div>
+
                 <button class="submit-btn" onclick="submitSelection()">
                     Confirm Selection
                     <span>✓</span>
@@ -475,7 +485,7 @@
                 <p class="request-details" id="summaryText">
                     We have received your preferences.
                 </p>
-                
+
                 <!-- Car Animation Block -->
                 <div class="car-container">
                     <!-- SVG Car Icon -->
@@ -516,7 +526,7 @@
                     <div class="img-container">
                         <img src="${product.img}" alt="Product Image" class="product-img" id="img-${product.id}">
                     </div>
-                    
+
                     <div class="options-container">
                         <div class="color-options">
                             <div class="color-dot selected" style="background-color: #5e5e5e;" onclick="selectOption(event, this)"></div>
@@ -536,29 +546,28 @@
             `).join('');
         }
 
-        // Logic for Selecting Colors/Storage without adding to cart
+        // Logic for selecting colors/storage without adding to cart
         function selectOption(e, el) {
-            e.stopPropagation(); // CRITICAL: Prevents the click from triggering addToCart on the parent
-            
+            e.stopPropagation(); // Critical: prevents the click from triggering addToCart on the parent
+
             // Find parent container to identify siblings
             const container = el.parentElement;
             const siblings = container.children;
-            
+
             // Remove 'selected' class from all siblings
             for (let sib of siblings) {
                 sib.classList.remove('selected');
             }
-            
+
             // Add 'selected' class to the clicked element
             el.classList.add('selected');
         }
 
-        // Add to Selection Logic with Animation
+        // Add to selection logic with animation
         function addToCart(e, id, imgUrl) {
-            // No stopPropagation needed here because this is the top level handler
-            
+            // No stopPropagation needed here because this is the top-level handler
             cart.push(id);
-            
+
             // Animation logic
             const sourceImg = document.getElementById(`img-${id}`);
             const rectStart = sourceImg.getBoundingClientRect();
@@ -567,12 +576,12 @@
             const flyer = document.createElement('img');
             flyer.src = imgUrl;
             flyer.classList.add('flying-img');
-            
+
             flyer.style.top = `${rectStart.top}px`;
             flyer.style.left = `${rectStart.left}px`;
             flyer.style.width = `${rectStart.width}px`;
             flyer.style.height = `${rectStart.height}px`;
-            
+
             document.body.appendChild(flyer);
 
             flyer.offsetHeight; // Force reflow
@@ -596,21 +605,22 @@
 
         function animateActionBar() {
             actionBar.classList.remove('bump-anim');
-            void actionBar.offsetWidth; 
+            void actionBar.offsetWidth;
             actionBar.classList.add('bump-anim');
         }
 
-        // Insight / Modal Logic
+        // Insight / modal logic
         function openInsight() {
-            if(cart.length === 0) {
+            if (cart.length === 0) {
                 alert("Please select at least one item.");
                 return;
             }
-            // Show Form, Hide Success
+
+            // Show form, hide success
             formView.style.display = 'block';
             successView.style.display = 'none';
             successView.classList.remove('active');
-            
+
             modal.classList.add('active');
         }
 
@@ -621,39 +631,42 @@
         function submitSelection() {
             const name = document.getElementById('nameInput').value;
             const email = document.getElementById('emailInput').value;
+            const address = document.getElementById('addressInput').value; // New field
 
-            if(!name || !email) {
+            // Validate required fields (including shipping address)
+            if (!name || !email || !address) {
                 alert("Please fill in all fields");
                 return;
             }
 
-            // Transition to Success View
+            // Transition to success view
             formView.style.display = 'none';
             successView.style.display = 'flex';
-            
+
             // Trigger animations
             setTimeout(() => {
                 successView.classList.add('active');
                 const summary = document.getElementById('summaryText');
-                summary.innerHTML = `We have received your preferences.<br>Confirmation sent to ${email}.`;
+                // Include address in the confirmation summary
+                summary.innerHTML = `We have received your preferences.<br>Confirmation sent to ${email}.<br>Shipping to: ${address}.`;
             }, 100);
         }
 
         function resetApp() {
             closeModal();
-            
+
             // Reset state
             setTimeout(() => {
                 cart = [];
                 updateCartUI();
                 document.getElementById('nameInput').value = '';
                 document.getElementById('emailInput').value = '';
+                document.getElementById('addressInput').value = ''; // Reset new field
             }, 300);
         }
 
         // Initialize
         renderProducts();
-
     </script>
 </body>
 </html>
